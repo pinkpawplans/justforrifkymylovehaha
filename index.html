@@ -174,6 +174,7 @@ let container=document.querySelector(".container");
 
 let noScale=1;
 let yesScale=1;
+let yakinStep=0;
 
 /* NO shrinking */
 no.onclick=function(){
@@ -184,8 +185,27 @@ no.onclick=function(){
   yes.style.transform="scale("+yesScale+")";
 };
 
-/* YES click */
+/* YES with YAKIN sequence */
 yes.onclick=function(){
+
+  if(yakinStep===0){
+    question.innerText="Yakin? 🤨";
+    yakinStep++;
+    return;
+  }
+
+  if(yakinStep===1){
+    question.innerText="Yakin banget?? 😳";
+    yakinStep++;
+    return;
+  }
+
+  if(yakinStep===2){
+    question.innerText="Beneran nih terakhir yaa 😏";
+    yakinStep++;
+    return;
+  }
+
   question.innerText="💌";
   no.style.display="none";
   yes.style.display="none";
