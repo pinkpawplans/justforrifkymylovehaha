@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💕</title>
+
+<style>
+body{
+  margin:0;
+  background:linear-gradient(to bottom,#ffe6f2,#fff0f5);
+  font-family:cursive;
+  text-align:center;
+  overflow:hidden;
+}
+
+/* Question */
+h1{
+  margin-top:120px;
+  color:#ff4da6;
+}
+
+/* Buttons */
+button{
+  padding:12px 25px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+#yes{background:#ff66b2;color:white;}
+#no{background:white;color:#ff66b2;position:absolute;}
+
+/* Glass Card */
+#card{
+  display:none;
+  position:relative;
+  width:400px;
+  margin:80px auto;
+  padding:30px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(10px);
+  box-shadow:0 10px 30px rgba(255,105,180,0.3);
+  font-size:16px;
+  line-height:1.6;
+  white-space:pre-line;
+}
+
+/* Bouquet */
+#bouquet{
+  position:absolute;
+  right:-80px;
+  bottom:-40px;
+  font-size:50px;
+}
+
+/* Falling animation */
+.fall{
+  position:fixed;
+  top:-10px;
+  animation:fall linear forwards;
+}
+
+@keyframes fall{
+  to{ transform:translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="q">Rifkyyy, will u be my valentine? 💌 -mae</h1>
+<button id="yes">IYAAA 💖</button>
+<button id="no">GAMAU</button>
+
+<div id="card">
+  <div id="letter"></div>
+  <div id="bouquet">💐</div>
+</div>
+
+<script>
+let no=document.getElementById("no");
+let yes=document.getElementById("yes");
+
+no.onmouseover=function(){
+  no.style.left=Math.random()*90+"vw";
+  no.style.top=Math.random()*90+"vh";
+};
+
+yes.onclick=function(){
+  document.getElementById("q").style.display="none";
+  yes.style.display="none";
+  no.style.display="none";
+  document.getElementById("card").style.display="block";
+  type();
+  startRain();
+};
+
+/* Typing */
+function type(){
+  let text="Halo Sayaang 💕\n\n 2 hari aku bikin ini wkwk kemarin harusnya kelar tp terus badanku rasanya gaenak bgt hueee. \n Udah aku pikirin dari lama, pengen pake css sm javascript tapi aku pelajarin masih ga nyambung huhu. \n Aku cuma bisa kasih iniii hueee, cuma HTML, semoga sukaa yaaa, karna bener-bener aku pikirinnn wkwk \n\n makasiii yaaa sayaaang udah selalu bikin aku heppiiii semoga aku juga gitu ke kamu \n i love you sayaaaang, every day \n\n Happy Valentine’s Day Rifky🌷 dari Maisye Cantik mwah";
+  let i=0;
+  let letter=document.getElementById("letter");
+  function typing(){
+    if(i<text.length){
+      letter.innerHTML+=text[i];
+      i++;
+      setTimeout(typing,40);
+    }
+  }
+  typing();
+}
+
+/* Rain of hearts + flowers + leaves */
+function createItem(){
+  let item=document.createElement("div");
+  let elements=["💗","💛","🤍","🌼","🌸","💐","🌻"];
+  item.innerHTML=elements[Math.floor(Math.random()*elements.length)];
+  item.classList.add("fall");
+  item.style.left=Math.random()*100+"vw";
+  item.style.fontSize=Math.random()*20+20+"px";
+  item.style.animationDuration=Math.random()*3+3+"s";
+  document.body.appendChild(item);
+  setTimeout(()=>item.remove(),6000);
+}
+
+function startRain(){
+  setInterval(createItem,300);
+}
+</script>
+
+</body>
+</html>
