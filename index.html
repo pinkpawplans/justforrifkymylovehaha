@@ -1,155 +1,295 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Valentine 💕</title>
+<title>For You 💌</title>
 
 <style>
-body{
+*{
   margin:0;
-  background:linear-gradient(to bottom,#ffe6f2,#fff0f5);
-  font-family:cursive;
-  text-align:center;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#fce3ec,#ffeef7,#fff8dc);
   overflow:hidden;
+  position:relative;
+  padding:20px;
 }
 
-/* Question */
+/* Mobile optimized container */
+.container{
+  text-align:center;
+  padding:30px 20px;
+  border-radius:22px;
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(18px);
+  box-shadow:0 15px 50px rgba(255,105,180,0.15);
+  width:100%;
+  max-width:420px;
+  max-height:90vh;
+  overflow-y:auto;
+}
+
+/* Smooth scrollbar (mobile safe) */
+.container::-webkit-scrollbar{
+  width:4px;
+}
+.container::-webkit-scrollbar-thumb{
+  background:#ffc2e0;
+  border-radius:10px;
+}
+
 h1{
-  margin-top:25vh;
-  color:#ff4da6;
-  font-size:6vw;
-  padding:0 20px;
+  font-size:clamp(18px,4vw,22px);
+  font-weight:500;
+  color:#d63384;
+  margin-bottom:25px;
+  line-height:1.5;
 }
 
-/* Buttons */
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
 button{
-  padding:14px 28px;
-  font-size:5vw;
-  border:none;
+  padding:12px 24px;
   border-radius:40px;
+  border:none;
+  font-size:14px;
   cursor:pointer;
-  margin:10px;
+  transition:all 0.3s ease;
 }
 
 #yes{
-  background:#ff66b2;
+  background:#ff4da6;
   color:white;
+  box-shadow:0 6px 20px rgba(255,77,166,0.3);
 }
 
 #no{
   background:white;
-  color:#ff66b2;
-  position:absolute;
+  color:#ff4da6;
+  border:1px solid #ffb3d9;
 }
 
-/* Glass Card */
-#card{
+#letter{
   display:none;
-  position:relative;
-  width:85%;
-  max-width:420px;
-  margin:15vh auto;
-  padding:25px;
-  border-radius:25px;
-  background:rgba(255,255,255,0.7);
-  backdrop-filter:blur(12px);
-  box-shadow:0 15px 40px rgba(255,105,180,0.3);
-  font-size:4.5vw;
-  line-height:1.7;
+  margin-top:20px;
+  font-size:14px;
+  line-height:1.8;
+  color:#555;
   white-space:pre-line;
-  animation:fadeIn 1s ease forwards;
+  text-align:left;
+}
+
+/* Floating emoji */
+.emoji{
+  position:absolute;
+  font-size:20px;
+  animation:float 6s linear infinite;
+  opacity:0.6;
+  pointer-events:none;
+}
+
+@keyframes float{
+  from{transform:translateY(100vh);}
+  to{transform:translateY(-10vh);}
+}
+
+/* Confetti */
+.confetti{
+  position:absolute;
+  font-size:14px;
+  animation:confettiFall 3s linear forwards;
+  pointer-events:none;
+}
+
+@keyframes confettiFall{
+  from{transform:translateY(-10vh) rotate(0deg);}
+  to{transform:translateY(100vh) rotate(360deg);}
+}
+
+/* Easter egg popup */
+.easter{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+  animation:fadeIn 0.4s ease;
+}
+
+.easter-box{
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  text-align:center;
+  max-width:300px;
 }
 
 @keyframes fadeIn{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1; transform:translateY(0);}
+  from{opacity:0;}
+  to{opacity:1;}
 }
 
-/* Bouquet (tetap di dalam card biar gak keluar layar) */
-#bouquet{
-  margin-top:15px;
-  font-size:15vw;
-}
-
-/* Falling animation */
-.fall{
-  position:fixed;
-  top:-10px;
-  animation:fall linear forwards;
-}
-
-@keyframes fall{
-  to{ transform:translateY(110vh); }
-}
 </style>
 </head>
-
 <body>
 
-<h1 id="q">Rifkyyy, will u be my valentine? 💌 -mae</h1>
-<button id="yes">IYAAA 💖</button>
-<button id="no">GAMAU</button>
+<div class="container">
+  <h1 id="question">Sayaaang, will u be my valentine? 💗💗 -mae</h1>
 
-<div id="card">
+  <div class="buttons">
+    <button id="yes">YES 💗</button>
+    <button id="no">GAMAU</button>
+  </div>
+
   <div id="letter"></div>
-  <div id="bouquet">💐🌼🤍🌿</div>
 </div>
 
+<audio id="bgm" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_c8b64d9c2b.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-let no=document.getElementById("no");
 let yes=document.getElementById("yes");
+let no=document.getElementById("no");
+let letter=document.getElementById("letter");
+let question=document.getElementById("question");
+let music=document.getElementById("bgm");
+let container=document.querySelector(".container");
 
-/* NO button still runs (works on touch too) */
-no.addEventListener("touchstart", moveNo);
-no.addEventListener("mouseover", moveNo);
+let noScale=1;
+let yesScale=1;
 
-function moveNo(){
-  no.style.left=Math.random()*80+"vw";
-  no.style.top=Math.random()*80+"vh";
-}
+/* NO shrinking */
+no.onclick=function(){
+  noScale-=0.1;
+  yesScale+=0.1;
+  if(noScale<0.5) noScale=0.5;
+  no.style.transform="scale("+noScale+")";
+  yes.style.transform="scale("+yesScale+")";
+};
 
 /* YES click */
 yes.onclick=function(){
-  document.getElementById("q").style.display="none";
-  yes.style.display="none";
+  question.innerText="°❀⋆･.ೃ࿔˚˖❀°˖";
   no.style.display="none";
-  document.getElementById("card").style.display="block";
-  type();
-  startRain();
+  yes.style.display="none";
+  letter.style.display="block";
+  startTyping();
+  launchConfetti();
+  music.volume=0.2;
+  music.play();
 };
 
-/* Typing */
-function type(){
-  let text="Halo Sayaang 💕\n\n2 hari aku bikin ini wkwk...\n\nI love you sayaaaang, every day 💗\n\nHappy Valentine’s Day Rifky🌷\ndari Maisye Cantik mwah";
+/* Typing + auto scroll */
+const message=`Haloo Rifky 💕
+
+  ฅ^>⩊<^ ฅ
+
+I made this specially just for you 💗
+Jujur aku 2 hari bikin ini, baru kelar hari ini huhu
+Sebenernya mau aku kirim kemarin tp badanku gaenak bgt mau lanjutin.
+
+Ini udah aku pikirin dari lama, pengen pake CSS/JavaScript
+Tapi ternyata otak ku cuma sanggup bikin HTML sesimpel gini aja 🥹
+Semoga sukaaa yaa saayaaang, walaupun ga banyak animasi lucunya hehe
+
+Makasii yaa sayaang udah selalu bikin aku heppiiii 💗
+Semoga aku juga gitu ke kamu, pengen bgt kamu heppii
+      𐔌՞ ܸ.ˬ.ܸ՞𐦯
+Thank you for being my favorite person.
+Happy Valentine’s Day 🤍
+
+⠀ 🌺🌺⠀⠀⠀⠀❀🌺🏵️
+🏵️🌺🏵️🌺🌺🌺❀🌺
+⠀🌺❀🏵️🏵️🌺🌺🌺
+⠀⠀🌺🌺🌺❀🏵️🌺
+⠀Λ⠀⠀⠀🌺🏵️🌺❀
+(⠀˘⠀ᵕ⠀˘⠀🌺❀
+ヽ⠀つ＼⠀⠀⠀／
+ ⠀⠀UU⠀/🎀＼
+
+— from someone who loves you, maisye cantik mwah 💋`;
+
+function startTyping(){
   let i=0;
-  let letter=document.getElementById("letter");
-  function typing(){
-    if(i<text.length){
-      letter.innerHTML+=text[i];
+  letter.innerHTML="";
+  function type(){
+    if(i<message.length){
+      letter.innerHTML+=message.charAt(i);
+      container.scrollTop=container.scrollHeight; // AUTO SCROLL
       i++;
-      setTimeout(typing,40);
+      setTimeout(type,30);
     }
   }
-  typing();
+  type();
 }
 
-/* Rain */
-function createItem(){
-  let item=document.createElement("div");
-  let elements=["💗","💛","🤍","🌼","🌸","🌿"];
-  item.innerHTML=elements[Math.floor(Math.random()*elements.length)];
-  item.classList.add("fall");
-  item.style.left=Math.random()*100+"vw";
-  item.style.fontSize=Math.random()*6+4+"vw";
-  item.style.animationDuration=Math.random()*3+3+"s";
-  document.body.appendChild(item);
-  setTimeout(()=>item.remove(),6000);
+/* Floating emojis */
+const emojis=["💗","💛","🤍","🌼","🌸","💐","🌻"];
+
+function createEmoji(){
+  let el=document.createElement("div");
+  el.classList.add("emoji");
+  el.innerHTML=emojis[Math.floor(Math.random()*emojis.length)];
+  el.style.left=Math.random()*100+"vw";
+  el.style.animationDuration=(Math.random()*3+4)+"s";
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),6000);
+}
+setInterval(createEmoji,400);
+
+/* Confetti */
+function launchConfetti(){
+  for(let i=0;i<70;i++){
+    let conf=document.createElement("div");
+    conf.classList.add("confetti");
+    conf.innerHTML=emojis[Math.floor(Math.random()*emojis.length)];
+    conf.style.left=Math.random()*100+"vw";
+    conf.style.animationDuration=(Math.random()*2+2)+"s";
+    document.body.appendChild(conf);
+    setTimeout(()=>conf.remove(),3000);
+  }
 }
 
-function startRain(){
-  setInterval(createItem,300);
+/* Hidden easter egg (click background 5x) */
+let clickCount=0;
+document.body.addEventListener("click",function(e){
+  if(e.target===document.body){
+    clickCount++;
+    if(clickCount===5){
+      showEasterEgg();
+      clickCount=0;
+    }
+  }
+});
+
+function showEasterEgg(){
+  let overlay=document.createElement("div");
+  overlay.classList.add("easter");
+  overlay.innerHTML=`
+    <div class="easter-box">
+      <h3>i love uuu sayaang 💋💗</h3>
+      <p>semoga bisa cepet ketemu lagi yaaa kangen bgt jujurly</p>
+      <button onclick="this.parentElement.parentElement.remove()">Close</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
 }
 </script>
 
