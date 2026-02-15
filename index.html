@@ -2,6 +2,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Valentine 💕</title>
 
 <style>
@@ -15,45 +17,60 @@ body{
 
 /* Question */
 h1{
-  margin-top:120px;
+  margin-top:25vh;
   color:#ff4da6;
+  font-size:6vw;
+  padding:0 20px;
 }
 
 /* Buttons */
 button{
-  padding:12px 25px;
-  font-size:18px;
+  padding:14px 28px;
+  font-size:5vw;
   border:none;
-  border-radius:30px;
+  border-radius:40px;
   cursor:pointer;
-  transition:0.3s;
+  margin:10px;
 }
 
-#yes{background:#ff66b2;color:white;}
-#no{background:white;color:#ff66b2;position:absolute;}
+#yes{
+  background:#ff66b2;
+  color:white;
+}
+
+#no{
+  background:white;
+  color:#ff66b2;
+  position:absolute;
+}
 
 /* Glass Card */
 #card{
   display:none;
   position:relative;
-  width:400px;
-  margin:80px auto;
-  padding:30px;
-  border-radius:20px;
-  background:rgba(255,255,255,0.6);
-  backdrop-filter:blur(10px);
-  box-shadow:0 10px 30px rgba(255,105,180,0.3);
-  font-size:16px;
-  line-height:1.6;
+  width:85%;
+  max-width:420px;
+  margin:15vh auto;
+  padding:25px;
+  border-radius:25px;
+  background:rgba(255,255,255,0.7);
+  backdrop-filter:blur(12px);
+  box-shadow:0 15px 40px rgba(255,105,180,0.3);
+  font-size:4.5vw;
+  line-height:1.7;
   white-space:pre-line;
+  animation:fadeIn 1s ease forwards;
 }
 
-/* Bouquet */
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* Bouquet (tetap di dalam card biar gak keluar layar) */
 #bouquet{
-  position:absolute;
-  right:-80px;
-  bottom:-40px;
-  font-size:50px;
+  margin-top:15px;
+  font-size:15vw;
 }
 
 /* Falling animation */
@@ -77,18 +94,23 @@ button{
 
 <div id="card">
   <div id="letter"></div>
-  <div id="bouquet">💐</div>
+  <div id="bouquet">💐🌼🤍🌿</div>
 </div>
 
 <script>
 let no=document.getElementById("no");
 let yes=document.getElementById("yes");
 
-no.onmouseover=function(){
-  no.style.left=Math.random()*90+"vw";
-  no.style.top=Math.random()*90+"vh";
-};
+/* NO button still runs (works on touch too) */
+no.addEventListener("touchstart", moveNo);
+no.addEventListener("mouseover", moveNo);
 
+function moveNo(){
+  no.style.left=Math.random()*80+"vw";
+  no.style.top=Math.random()*80+"vh";
+}
+
+/* YES click */
 yes.onclick=function(){
   document.getElementById("q").style.display="none";
   yes.style.display="none";
@@ -100,7 +122,7 @@ yes.onclick=function(){
 
 /* Typing */
 function type(){
-  let text="Halo Sayaang 💕\n\n 2 hari aku bikin ini wkwk kemarin harusnya kelar tp terus badanku rasanya gaenak bgt hueee. \n Udah aku pikirin dari lama, pengen pake css sm javascript tapi aku pelajarin masih ga nyambung huhu. \n Aku cuma bisa kasih iniii hueee, cuma HTML, semoga sukaa yaaa, karna bener-bener aku pikirinnn wkwk \n\n makasiii yaaa sayaaang udah selalu bikin aku heppiiii semoga aku juga gitu ke kamu \n i love you sayaaaang, every day \n\n Happy Valentine’s Day Rifky🌷 dari Maisye Cantik mwah";
+  let text="Halo Sayaang 💕\n\n2 hari aku bikin ini wkwk...\n\nI love you sayaaaang, every day 💗\n\nHappy Valentine’s Day Rifky🌷\ndari Maisye Cantik mwah";
   let i=0;
   let letter=document.getElementById("letter");
   function typing(){
@@ -113,14 +135,14 @@ function type(){
   typing();
 }
 
-/* Rain of hearts + flowers + leaves */
+/* Rain */
 function createItem(){
   let item=document.createElement("div");
-  let elements=["💗","💛","🤍","🌼","🌸","💐","🌻"];
+  let elements=["💗","💛","🤍","🌼","🌸","🌿"];
   item.innerHTML=elements[Math.floor(Math.random()*elements.length)];
   item.classList.add("fall");
   item.style.left=Math.random()*100+"vw";
-  item.style.fontSize=Math.random()*20+20+"px";
+  item.style.fontSize=Math.random()*6+4+"vw";
   item.style.animationDuration=Math.random()*3+3+"s";
   document.body.appendChild(item);
   setTimeout(()=>item.remove(),6000);
